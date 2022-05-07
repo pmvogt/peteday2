@@ -1,33 +1,27 @@
 /** @jsxImportSource theme-ui */
-import { data } from "./data/data";
-import { Box, Flex, Image, ThemeProvider } from "theme-ui";
-import theme from "./theme";
+import React from "react";
+import { ThemeProvider } from "theme-ui";
 
+import ListItem from "./components/ListItem";
+
+import theme from "./theme";
 import "./App.scss";
 
-function App() {
+function App(props) {
+  const list = props.achievements.map((achievement) => (
+    <ListItem
+      id={achievement.id}
+      img={achievement.icon}
+      name={achievement.name}
+      description={achievement.description}
+      key={achievement.id}
+    />
+  ));
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
-        <form>
-          {data &&
-            data.map((achievement) => {
-              return (
-                <Flex key={achievement.id} bg="muted">
-                  <Image
-                    src={achievement.icon}
-                    alt={`Steam icon graphic for ${achievement.name}`}
-                    pr={2}
-                  />
-
-                  <Flex sx={{ flexDirection: "column", textAlign: "left" }}>
-                    <span>{achievement.name}</span>
-                    <span>{achievement.description}</span>
-                  </Flex>
-                </Flex>
-              );
-            })}
-        </form>
+        <form>{list}</form>
       </div>
     </ThemeProvider>
   );
