@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+/** @jsxImportSource theme-ui */
+import { data } from "./data/data";
+import { Box, Flex, Image, ThemeProvider } from "theme-ui";
+import theme from "./theme";
+
+import "./App.scss";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <div className="App">
+        <form>
+          {data &&
+            data.map((achievement) => {
+              return (
+                <Flex key={achievement.id} bg="muted">
+                  <Image
+                    src={achievement.icon}
+                    alt={`Steam icon graphic for ${achievement.name}`}
+                    pr={2}
+                  />
+
+                  <Flex sx={{ flexDirection: "column", textAlign: "left" }}>
+                    <span>{achievement.name}</span>
+                    <span>{achievement.description}</span>
+                  </Flex>
+                </Flex>
+              );
+            })}
+        </form>
+      </div>
+    </ThemeProvider>
   );
 }
 
