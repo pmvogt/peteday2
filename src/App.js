@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { Box, ThemeProvider } from "theme-ui";
 import { nanoid } from "nanoid";
+import { FixedSizeList as List } from "react-window";
 
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
@@ -87,13 +88,17 @@ function App(props) {
   const achievementNoun = list.length !== 1 ? "achievements" : "achivements";
   const headingText = `${list.length} ${achievementNoun} remaining`;
 
+  const Row = ({ index, style }) => <div style={style}>{list[index]}</div>;
+
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         <Form addAchievement={addAchievement} />
         <h2>{headingText}</h2>
         <Box>{filterList}</Box>
-        <ul>{list}</ul>
+        <List height={800} itemCount={1200} itemSize={35} width={600}>
+          {Row}
+        </List>
       </div>
     </ThemeProvider>
   );
