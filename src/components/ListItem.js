@@ -1,10 +1,10 @@
 /** @jsxImportSource theme-ui */
 import React from "react";
 import propTypes from "prop-types";
-
 import { Box, Button, Card, Image, Flex } from "theme-ui";
 
 export default function ListItem(props) {
+  // console.log(props);
   return (
     <li sx={{ listStyleType: "none" }}>
       <Card sx={{ background: props.completed ? "tomato" : "transparent" }}>
