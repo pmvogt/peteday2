@@ -2,13 +2,15 @@
 import React, { useState } from "react";
 import { Box, ThemeProvider } from "theme-ui";
 import { nanoid } from "nanoid";
-
 import Form from "./components/Form";
 import FilterButton from "./components/FilterButton";
 import ListItem from "./components/ListItem";
 
 import theme from "./theme";
 import "./App.scss";
+// noinspection ES6UnusedImports slice used for a commented out debug line
+import {prop, slice} from 'ramda';
+import AchievementProvider from "./components/achievement-ctx";
 
 const FILTER_MAP = {
   All: () => true,
@@ -19,6 +21,7 @@ const FILTER_MAP = {
 const FILTER_NAMES = Object.keys(FILTER_MAP);
 
 function App(props) {
+  // const [achievements, setAchievements] = useState(slice(0, 10, props.achievements)); // use this line for debugging fewer (10) achievements.
   const [achievements, setAchievements] = useState(props.achievements);
   const [filter, setFilter] = useState("All");
 
@@ -32,33 +35,6 @@ function App(props) {
     setAchievements([...achievements, newAchievement]);
   }
 
-  function toggleBacklogged(id) {
-    const backloggedAchievements = achievements.map((achievement) => {
-      // if this task has the same ID as the edited task
-      if (id === achievement.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        return { ...achievement, backlogged: !achievement.backlogged };
-      }
-      return achievement;
-    });
-    setAchievements(backloggedAchievements);
-    console.log(backloggedAchievements);
-  }
-
-  function toggleCompleted(id) {
-    const completedAchievements = achievements.map((achievement) => {
-      // if this task has the same ID as the edited task
-      if (id === achievement.id) {
-        // use object spread to make a new object
-        // whose `completed` prop has been inverted
-        return { ...achievement, completed: !achievement.completed };
-      }
-      return achievement;
-    });
-    setAchievements(completedAchievements);
-  }
-
   const list = achievements
     .filter(FILTER_MAP[filter])
     .map((achievement) => (
@@ -67,11 +43,7 @@ function App(props) {
         img={achievement.icon}
         name={achievement.name}
         description={achievement.description}
-        completed={achievement.completed}
-        backlogged={achievement.backlogged}
         key={achievement.id}
-        toggleCompleted={toggleCompleted}
-        toggleBacklogged={toggleBacklogged}
       />
     ));
 
@@ -89,13 +61,16 @@ function App(props) {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <Form addAchievement={addAchievement} />
-        <h2>{headingText}</h2>
-        <Box>{filterList}</Box>
-        <ul>{list}</ul>
-      </div>
+      <AchievementProvider>
+        <div className="App">
+          <Form use={addAchievement} />
+          <h2>{headingText}</h2>
+          <Box>{filterList}</Box>
+          <ul>{list}</ul>
+        </div>
+      </AchievementProvider>
     </ThemeProvider>
+
   );
 }
 

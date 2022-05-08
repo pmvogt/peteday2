@@ -1,13 +1,19 @@
 /** @jsxImportSource theme-ui */
-import React from "react";
+import React, {useContext} from "react";
 import propTypes from "prop-types";
-
 import { Box, Button, Card, Image, Flex } from "theme-ui";
+import {AchievementContext} from "./achievement-ctx";
+import {path} from "ramda";
 
 export default function ListItem(props) {
+  const {data, toggleCompleted, toggleBacklogged, ...other} = useContext(AchievementContext);
+  // console.log({data, other});
+  // console.log(props);
+  const completed = path(['completed', props.id])(data)
+
   return (
     <li sx={{ listStyleType: "none" }}>
-      <Card sx={{ background: props.completed ? "tomato" : "transparent" }}>
+      <Card sx={{ background: completed ? "tomato" : "transparent" }}>
         <Flex
           sx={{
             flexDirection: "column",
@@ -24,7 +30,7 @@ export default function ListItem(props) {
           <input
             id={props.id}
             type="checkbox"
-            defaultChecked={props.completed}
+            defaultChecked={completed}
             sx={{ visibility: "hidden" }}
           />
           <label htmlFor={props.id}>{props.name}</label>
@@ -33,13 +39,13 @@ export default function ListItem(props) {
           <Box>
             <Button
               type="Button"
-              onClick={() => props.toggleCompleted(props.id)}
+              onClick={() => toggleCompleted(props.id)}
             >
               Mark completed
             </Button>
             <Button
               type="button"
-              onClick={() => props.toggleBacklogged(props.id)}
+              onClick={() => toggleBacklogged(props.id)}
             >
               Backlog it
             </Button>
