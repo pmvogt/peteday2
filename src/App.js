@@ -43,13 +43,7 @@ function App(props) {
         img={achievement.icon}
         name={achievement.name}
         description={achievement.description}
-        // completed={prop(achievement.id, completed)}
-        // backlogged={prop(achievement.id, backlogged)}
         key={achievement.id}
-        // the individual list items are only ever going to pass in their own ids.  instead of giving them a general function to pass in id,
-        // we can give them a function they call without passing in anything.  probably doesnt matter much except it keeps the mostly-UI components dumber/less logic code.
-        // toggleCompleted={() => toggleCompleted(achievement.id)}
-        // toggleBacklogged={() => toggleBacklogged(achievement.id)}
       />
     ));
 
